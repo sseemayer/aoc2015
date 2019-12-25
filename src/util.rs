@@ -23,14 +23,16 @@ pub fn read_to_lines(path: &str) -> Result<Vec<String>> {
 }
 
 /// Read a whole file, identified by a path, to a list of parsed representations, one per line.
-pub fn read_to_parsed_lines<T, F: FnOnce(&str) -> Result<T> + Copy>(
+pub fn read_to_parsed_lines<
+    T,
+    C: std::iter::FromIterator<T>,
+    F: FnOnce(&str) -> Result<T> + Copy,
+>(
     path: &str,
     parser: &F,
-) -> Result<Vec<T>> {
+) -> Result<C> {
     let f = File::open(path)?;
     let br = BufReader::new(f);
 
-    br.lines()
-        .map(move |l| parser(&l?))
-        .collect::<Result<Vec<T>>>()
+    br.lines().map(move |l| parser(&l?)).collect()
 }
