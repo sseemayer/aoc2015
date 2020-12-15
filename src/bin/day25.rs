@@ -1,9 +1,3 @@
-use itertools::Itertools;
-use std::{
-    fs::File,
-    io::{BufRead, BufReader},
-};
-
 use aoc2015::Result;
 
 fn main() -> Result<()> {
